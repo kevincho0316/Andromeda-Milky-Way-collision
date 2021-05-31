@@ -1,5 +1,5 @@
 # vpython_Andromeda-Milky-Way-collision         Vpython을 이용한 안드로메다 우리 은하 충돌 시뮬레이션 
-## install      설치
+## Install     
 <p align="center">
   <img src="demo/Andromeda-Milky-Way-collision.png" width=700><br/>
 </p>
