@@ -63,9 +63,9 @@ G = 6.673e-11
 만유인력을 사용하기 위해서는 필수적인 부분이지요 ↘. 
 <p align="center">
   <img src="image/1.PNG" width=170><br/>
+  ↑ 만유인력 공식 
 </p>
 
-↑ 만유인력 공식 
 ***
 ```
 MIN_SolarMass = SolarMass * 0.09
