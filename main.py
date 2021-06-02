@@ -24,24 +24,24 @@ scene.height = 650
 G = 6.673e-11
 
 # 평균 별들의 질량
-SolarMass = 2.000e30
+SolarMass = 1.989e30
 
 # 별들의 질량 범위 만들기
 MIN_SolarMass = SolarMass * 0.5
-MAX_SolarMass = SolarMass * 250
-AVG_SolarMass = SolarMass * 3.0
+MAX_SolarMass = SolarMass * 256
+AVG_SolarMass = SolarMass * 0.3
 
-# 은하계 길이
-DIST_SCALE = 1e20  # 1e20
+# 스케일
+kScale = 1e20# 3e16  
 
 # 범위 설정
-MAX_Orbit_RADIUS = DIST_SCALE * 10
-MIN_Orbit_RADIUS = DIST_SCALE * 0.15
+MAX_Orbit_RADIUS = kScale * 10
+MIN_Orbit_RADIUS = kScale * 0.15
 
 
 # 두께 설정
-MILKY_WAY_GALAXY_THICKNESS = DIST_SCALE * 0.9
-ANDROMEDA_GALAXY_THICKNESS = DIST_SCALE * 0.2
+MILKY_WAY_GALAXY_THICKNESS = kScale * 0.4
+ANDROMEDA_GALAXY_THICKNESS = kScale  * 0.67
 
 
 # 우리 은하는 3,000억개의 별 개수를 가지고 있다.
@@ -71,7 +71,6 @@ def gravity_acceleration(mass, radius):
 
 def acceleration(obj, galaxy):
     r_galaxy = galaxy.pos - obj.pos
-    # We have a = F / m = G * m_center / r ^2
     return r_galaxy.norm() * gravity_acceleration(galaxy.mass, r_galaxy.mag)                     #별표ㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛㅛ
 
 
@@ -115,7 +114,7 @@ class Galaxy(object):
 
             positions.append(pos)
 
-        def orbital_Vel(center_mass, radius): #공전속도 계산
+        def orbital_Vel(center_mass, radius):                #공전속도 계산
             return sqrt(G * center_mass / radius)           #F=m* v²/r (구심력 공식) = F = G m1 m2 / r²  바탕화면 사진
 
         # 별 리스트 생성
@@ -147,7 +146,7 @@ class Galaxy(object):
 # 별의 클래스를 만들어준다. (어ㅓㅓㅓㅓㅁ청 마니 만들어야 하기에)
 class Star(object):
     def __init__(self, mass, radius, pos, vel, color):
-        self.obj = sphere(pos=pos / DIST_SCALE, radius=radius, color=color, make_trail = True, retain=3)     #구 만들기
+        self.obj = sphere(pos=pos / kScale, radius=radius, color=color, make_trail = True, retain=3)     #구 만들기
         self.mass = mass
         self.vel = vel
         self._pos = pos
@@ -159,7 +158,7 @@ class Star(object):
 
     @pos.setter
     def pos(self, value):
-        self.obj.pos = value / DIST_SCALE
+        self.obj.pos = value / kScale
         self._pos = value
 
     def __str__(self):
@@ -173,19 +172,19 @@ def main():
     t = 0
     milky_way = Galaxy(
         num_stars=NumOfStar_MIlky,
-        pos=vector(-3, 0, 0) * DIST_SCALE,
+        pos=vector(-3, 0, 0) * kScale,
         vel=vector(0, 0, 0),
         radius=MAX_Orbit_RADIUS,
         thickness=MILKY_WAY_GALAXY_THICKNESS,
-        color=vector(0.9, 0.9, 1)
+        color=vector(1, 0, 0)
     )
     andromeda = Galaxy(
         num_stars=NumOfStar_Andromeda,
-        pos=vector(3, 0, 0) * DIST_SCALE,
+        pos=vector(3, 0, 0) * kScale,
         vel=vector(0, 3, 0),
         radius=MAX_Orbit_RADIUS,
         thickness=ANDROMEDA_GALAXY_THICKNESS,
-        color=vector(0, 0.5, 1)
+        color=vector(0, 0, 1)
     )
 
     # amda = sphere(make_trail = True)
