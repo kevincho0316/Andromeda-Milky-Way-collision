@@ -41,7 +41,8 @@ To start simulation run:
 python3 main.py
 ```
 
-##Dev Enviorment
+## Dev Enviorment
+
 - 운영체제: Window10
 - 사용언어: python 3.6.0
 - 사용 라이브러리 vpython, math, random, numpy
