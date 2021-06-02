@@ -191,10 +191,13 @@ class Galaxy(object):
             return sqrt(G * center_mass / radius)           
 
 ```
+
 밑에 처럼 v의 값을 구하는 모습입니다.
+
 <p align="center">
   <img src="image/4.PNG" width=170><br/>
 </p>
+
 ##### 실제 속도 구하기
 ```
         stars = []
@@ -210,7 +213,9 @@ class Galaxy(object):
 ```
 이부분이 해결이 안되서 2시간 골머리를 앓다가 스텍오버에서 해결법을 찾은건데....
 벡터 관련된 내용입니다. 저도 모르겠네요 참고로 옆 주석은 영어를 해석 한것입니다.(해석한건 *이 끝에 붙어있음)
+
 ##### 별 생성 신호
+
 ```
 
             stars.append(Star(                          #구를 만들어달라고 신청을 한다.
@@ -225,9 +230,13 @@ class Galaxy(object):
         self.stars = np.array(stars)
 
 ```
+
 별 생성을 하고 리스트에 추가합니다.
+
 ***
+
 #### 별
+
 ```
 class Star(object):
     def __init__(self, mass, radius, pos, vel, color):
@@ -250,13 +259,20 @@ class Star(object):
             "\nVel: " + str(self.vel)
 
 ```
+
 말그대로 별을 생성 하는 부분입니다. 질량 색상 등의 요청에 맞추어 이를 생성합니다.
+
 ```@property```
+
 는 코드의 양을 줄여주는 장치로 신기함.. 하여튼 그럼 
+
 ***
+
 ### 진짜 실행 
+
 ~~그럼 가짜로 실행하니?~~
 여기는 비교적 쉬우니 빨리 넘어가쟈
+
 ```
     t = 0
     milky_way = Galaxy(
@@ -276,7 +292,9 @@ class Star(object):
         color=vector(0, 0, 1)
     )
 ```
+
 클래스 호출해서 은하 만듭니다.
+
 ```
     while True:
         rate(100)
@@ -300,6 +318,7 @@ class Star(object):
             star.vel += acceleration(star, milky_way) * distance + acceleration(star, andromeda) * distance
             star.pos += star.vel * distance
 ```
+
 요거는 이제 별들의 움직임을 마ㅏㅏㅏㄱ 계산하는 부분임 
 
 ```
@@ -311,6 +330,7 @@ class Star(object):
 
         t += distance
 ```
+
 은하의 움직임을 계산합니다.
 
 
