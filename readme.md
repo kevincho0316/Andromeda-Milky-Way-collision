@@ -61,7 +61,10 @@ G = 6.673e-11
 ```
 위는 모두가 알다 싶이 중력 상수입니다. 이 코드의 핵심 공식인 
 만유인력을 사용하기 위해서는 필수적인 부분이지요 ↘. 
-$$F = G \frac {m_{1}m_{2}}{R^2}$$
+<p align="center">
+  <img src="image/1.png" width=170><br/>
+</p>
+
 ↑ 만유인력 공식 
 ***
 ```
@@ -72,7 +75,9 @@ AVG_SolarMass = SolarMass * 0.3
 
 별들의 질량의 기준값을 태양의 질량으로 계산하려고합니다.
 
-$$태양의 질량 = 1.989 × 10^30$$ 
+<p align="center">
+  <img src="image/1.5.png" width=180><br/>
+</p>
 
 이를 기준으로 질량이 큰 항성인 **R136a1**의 질량인 **260 M☉**. 이말은 즉, 태양의 260배의 질량을 가지고 있습니다.이를 최대 별의 질량으로 잡고 최소 별의 질량은 ESO에서 발견한 **OGLE-TR-122b**를 기준으로 하였습니다. 이의 질량은 태양의 **9%** 입니다. 그리고 평균 질량은 태양의 **25%~30%** 정도라고 추정 되는데 이는 우리은하의 별의 개수와 총질량을 기반으로 구한 값이라고 합니다.  
 
@@ -115,8 +120,9 @@ def acceleration(obj, galaxy):
     return r_galaxy.norm() * gravity_acceleration(galaxy.mass, r_galaxy.mag)        
 ```
 가속도 관련 함수로서 다음과 같은 공식을 따라갑니다.
-$$F = G \frac {m_{1}m_{2}}{R^2} = ma$$
-$$G \frac {m_{1}m_{2}}{R^2} = a         $$ 
+<p align="center">
+  <img src="image/2.png" width=170><br/>
+</p>
 요렇게 해서 가속도를 구합니다.
 ***
 ####  만유인력
@@ -126,7 +132,9 @@ def gravity(mass1, mass2, radius):
 ```
 만유인력을 그냥 코딩으로 그대로 적은것입니다.
 
-$$F = G \frac {m_{1}m_{2}}{R^2}$$
+<p align="center">
+  <img src="image/3.png" width=170><br/>
+</p>
 
 ~~OOga BooGa Caveman brain~~
 ***
@@ -171,8 +179,8 @@ class Galaxy(object):
 
 ```
 첫번째는 은하 클라스입니다. 여기서는 은하 안에 있는 별들의 위치를 제작한다고 볼 수 있습니다. 이 프로그램은 가우스 분포를 이용해 별들의 위치를 만들어냅니다. 본 방법을 이용한 이유는 별들은 중력 때문에 은하의 중심에 더 모이게 되고 은하의 외곽에는 별이 많이 없는데 이를 나타낼 수 있는 것이 가우스 분포이기 때문입니다.
-<p align="center">
-  <img src="image/gaussian.png" width=700><br/>
+  <p align="center">
+    <img src="image/gaussian.png" width=700><br/>
   다변량 가우시안 정규분포
 </p>
 🙄뭔 그래프인지 정확히 모름
@@ -184,10 +192,9 @@ class Galaxy(object):
 
 ```
 밑에 처럼 v의 값을 구하는 모습입니다.
-$$ F = G \frac {m_{1}m_{2}}{R^2} = m \frac {v^2}{R}$$
-$$ G \frac {m_{1}m_{2}}{R^2} \times \frac{R}{m} = v^2 $$
-$$ v= \sqrt{\frac{Gm_{1}}{R^2}}$$
-
+<p align="center">
+  <img src="image/4.png" width=170><br/>
+</p>
 ##### 실제 속도 구하기
 ```
         stars = []
