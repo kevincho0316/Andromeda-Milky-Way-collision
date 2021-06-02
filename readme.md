@@ -1,21 +1,34 @@
+<<<<<<< HEAD
 # Vpython을 이용한 안드로메다 우리 은하 충돌 시뮬레이션 
 
 
+=======
+# Vpython_Andromeda-Milky-Way-collision         Vpython을 이용한 안드로메다 우리 은하 충돌 시뮬레이션 
+>>>>>>> e764d6406c83018dd2cfd5b348f52e46b234cbb6
 <p align="center">
   <img src="image/Andromeda-Milky-Way-collision.png" width=700><br/>
 </p>
+<<<<<<< HEAD
 
 ## install      설치
+=======
+## Install     
+
+>>>>>>> e764d6406c83018dd2cfd5b348f52e46b234cbb6
 ```
 git clone https://github.com/kevincho0316/Andromeda-Milky-Way-collision.git
 ```
+
 ```
 pip install -r requirements.txt
 ```
+
 To start simulation run:
+
 ```
 python3 main.py
 ```
+<<<<<<< HEAD
 
 ##Dev Enviorment
 - 운영체제: Window10
@@ -289,3 +302,5 @@ class Star(object):
 
 
 # 끝
+=======
+>>>>>>> e764d6406c83018dd2cfd5b348f52e46b234cbb6
