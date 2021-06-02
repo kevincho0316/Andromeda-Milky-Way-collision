@@ -5,6 +5,30 @@
   <img src="image/Andromeda-Milky-Way-collision.png" width=700><br/>
 </p>
 
+- [Vpython을 이용한 안드로메다 우리 은하 충돌 시뮬레이션](#vpython을-이용한-안드로메다-우리-은하-충돌-시뮬레이션)
+  - [install      설치](#install------설치)
+  - [내가이걸 왜 만들었나....](#내가이걸-왜-만들었나)
+  - [내가 이걸 안만들었다 라고 생각할까봐 준비했다.](#내가-이걸-안만들었다-라고-생각할까봐-준비했다)
+    - [상수](#상수)
+    - [함수](#함수)
+      - [리미터](#리미터)
+      - [가속도](#가속도)
+      - [만유인력](#만유인력)
+    - [클래스](#클래스)
+      - [은하](#은하)
+        - [별 위치 구하기](#별-위치-구하기)
+        - [공전 속도 구하기](#공전-속도-구하기)
+        - [실제 속도 구하기](#실제-속도-구하기)
+        - [별 생성 신호](#별-생성-신호)
+      - [별](#별)
+    - [진짜 실행](#진짜-실행)
+- [끝](#끝)
+
+
+
+
+
+
 ## install      설치
 ```
 git clone https://github.com/kevincho0316/Andromeda-Milky-Way-collision.git
@@ -289,3 +313,4 @@ class Star(object):
 
 
 # 끝
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
