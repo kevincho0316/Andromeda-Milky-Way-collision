@@ -5,9 +5,9 @@ run on python 3.6 and
 
 from __future__ import division
 
-from vpython import vector, color, sqrt, sphere, rate, scene
+from vpython import vector, color, sqrt, sphere, rate, scene,keysdown,vec
 from math import fsum,floor
-from random import gauss
+from random import gauss, randint
 import numpy as np
 
 
@@ -47,7 +47,7 @@ ANDROMEDA_GALAXY_THICKNESS = kScale  * 0.67
 # 우리 은하는 3,000억개의 별 개수를 가지고 있다.
 # 안드로메다는 1 조개의 별을 가짐
 # 약 3.3배 차이 
-NumOfStar_MIlky = 500
+NumOfStar_MIlky = 50
 NumOfStar_Andromeda = floor(NumOfStar_MIlky * 3.33333)
 
 # 그래픽 
@@ -79,6 +79,14 @@ def gravity(mass1, mass2, radius):
     return G * mass1 * mass2 / radius**2  #만유인력 법칙 F = G m1 m2 / r²
 
 # Calculate acceleration on an object caused by galaxy
+
+def selector(galaxy_star,i):
+    selected = i
+    while selected == i: 
+        selected = randint(0,galaxy_star-1)
+    return selected
+
+
 
 
 # 갤럭시의 클래스를 만들어준다. (두개를 만들어야 하기 때문에)
@@ -187,22 +195,31 @@ def main():
         color=vector(0, 0, 1)
     )
 
+# //////////////////////////////////////////////////////////////////////////
+    tracker = sphere(pos=vector(10,0,0), radius = 0.03)
     # amda = sphere(make_trail = True)
     
+    scene.camera.follow(tracker)
+    targeted_star = 1
+    track_galaxy_num = NumOfStar_MIlky
+    track_galaxy = milky_way
+    track_mode = False
+    v = vector(0,0,0)
+    dv = 0.02
+    dt = 0.01
+
     while True:
         rate(100)
 
         mag_difference = milky_way.pos.mag - andromeda.pos.mag  #크기 차이
-
         # amda.pos = andromeda.pos
-     
         for i in range(len(milky_way.stars)):
             star = milky_way.stars[i]
             star.vel += acceleration(star, andromeda) * distance + acceleration(star, milky_way) * distance
             star.pos += star.vel * distance
             if i == 35:
                 star
-
+        
             
 
         andromeda_mask = np.zeros(len(andromeda.stars))
@@ -218,9 +235,42 @@ def main():
 
         andromeda.vel += acceleration(andromeda, milky_way) * distance
         andromeda.pos += andromeda.vel * distance
+        
 
         t += distance
 
+        # tracker
+        k = keysdown()
+        if 'e' in k: 
+            if track_galaxy == milky_way:
+                track_galaxy_num = NumOfStar_Andromeda
+                track_galaxy = andromeda
+        elif 'q' in k:
+            if track_galaxy == andromeda:
+                track_galaxy_num = NumOfStar_MIlky
+                track_galaxy = milky_way
+
+        elif 'f' in k:
+            targeted_star = selector(track_galaxy_num,targeted_star)
+        elif 'alt' in k:
+            track_mode = True
+        elif 't' in k:
+            track_mode = False
+        
+
+        if track_mode == False:
+            tracker.pos = track_galaxy.stars[targeted_star].pos /kScale
+        else:
+            if 'a' in k: v.x -= dv
+            if 'd' in k: v.x += dv
+            if 's' in k: v.y -= dv
+            if 'w' in k: v.y += dv
+            if 'q' in k: v.z -= dv
+            if 'e' in k: v.z += dv
+            
+            tracker.pos = v
+
 
 if __name__ == '__main__':
+    
     main()
