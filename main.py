@@ -1,13 +1,14 @@
 '''
 run on python 3.6 and
+계산은 풀 스케일로 계산하고 출력은 작은 버전으로 
 '''
 
 
 from __future__ import division
 
-from vpython import vector, color, sqrt, sphere, rate, scene
+from vpython import vector, color, sqrt, sphere, rate, scene,keysdown,vec,label
 from math import fsum,floor
-from random import gauss
+from random import gauss, randint
 import numpy as np
 
 
@@ -32,7 +33,7 @@ MAX_SolarMass = SolarMass * 256
 AVG_SolarMass = SolarMass * 0.3
 
 # 스케일
-kScale = 1e20# 3e16  
+kScale = 3e16# 3e16  
 
 # 범위 설정
 MAX_Orbit_RADIUS = kScale * 10
@@ -52,10 +53,16 @@ NumOfStar_Andromeda = floor(NumOfStar_MIlky * 3.33333)
 
 # 그래픽 
 STAR_RADIUS = 0.025
-distance = 1e17
+distance = 7e11     #그래픽과 실제 물리 계산을 할때와 실제 렌더링을 할때의 크기 차이 
 
 
 # 함수_______________________________________________________
+
+#인터 페이스
+def Ui(pos_s, vel, mass):
+    label( pos=pos_s, text='The <b>mass <i>M</i></b> = '+ str(mass) )
+    
+
 
 # x를 제한
 def Limiter(x, low, high):
@@ -79,6 +86,14 @@ def gravity(mass1, mass2, radius):
     return G * mass1 * mass2 / radius**2  #만유인력 법칙 F = G m1 m2 / r²
 
 # Calculate acceleration on an object caused by galaxy
+
+def selector(galaxy_star,i):
+    selected = i
+    while selected == i: 
+        selected = randint(0,galaxy_star-1)
+    return selected
+
+
 
 
 # 갤럭시의 클래스를 만들어준다. (두개를 만들어야 하기 때문에)
@@ -151,7 +166,6 @@ class Star(object):
         self.vel = vel
         self._pos = pos
 
-    # 물리적으론 크키가 조절된것을 사용 그래픽은 정규화된 버전 사용
     @property
     def pos(self):
         return self._pos
@@ -168,7 +182,6 @@ class Star(object):
 
 
 def main():
-
     t = 0
     milky_way = Galaxy(
         num_stars=NumOfStar_MIlky,
@@ -187,22 +200,33 @@ def main():
         color=vector(0, 0, 1)
     )
 
+# //////////////////////////////////////////////////////////////////////////
+    tracker = sphere(pos=vector(10,0,0), radius = 0.05, make_trail = True, retain=10)
+    v = vector(0,0,0)
+    dv = 0.1
+    dt = 0.01
     # amda = sphere(make_trail = True)
+    
+    scene.camera.follow(tracker)
+    targeted_star = 1
+    track_galaxy_num = NumOfStar_MIlky
+    track_galaxy = milky_way
+    track_mode = False
+
+    L = label( xoffset=20,yoffset=50,height=13)
     
     while True:
         rate(100)
 
         mag_difference = milky_way.pos.mag - andromeda.pos.mag  #크기 차이
 
-        # amda.pos = andromeda.pos
-     
         for i in range(len(milky_way.stars)):
             star = milky_way.stars[i]
             star.vel += acceleration(star, andromeda) * distance + acceleration(star, milky_way) * distance
             star.pos += star.vel * distance
             if i == 35:
                 star
-
+        
             
 
         andromeda_mask = np.zeros(len(andromeda.stars))
@@ -218,9 +242,69 @@ def main():
 
         andromeda.vel += acceleration(andromeda, milky_way) * distance
         andromeda.pos += andromeda.vel * distance
+        
 
         t += distance
 
+        # tracker
+        k = keysdown()
+        if 'e' in k: 
+            if track_galaxy == milky_way:
+                track_galaxy_num = NumOfStar_Andromeda
+                track_galaxy = andromeda
+        elif 'q' in k:
+            if track_galaxy == andromeda:
+                track_galaxy_num = NumOfStar_MIlky
+                track_galaxy = milky_way
+
+        elif 'f' in k:
+            targeted_star = selector(track_galaxy_num-1,targeted_star)
+        elif 'alt' in k:
+            track_mode = True
+            L.visible = False
+            tracker.visible = False
+        elif 't' in k:
+            track_mode = False
+            L.visible = True
+            tracker.visible = True
+        elif 'j' in k:
+            if L.visible == False:
+                L.visible = True
+        elif 'h' in k:
+            if L.visible == True:
+                L.visible = False
+        elif 'o' in k:
+            while True:
+                k = None
+                k = keysdown()
+                if 'p' in k:
+                    break
+                elif 'm' in k:
+                    scene.capture(str(targeted_star)+'.png')                # 여기ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ
+
+
+
+
+
+        if track_mode == False:
+            try:
+                tracker.pos = track_galaxy.stars[targeted_star].pos /kScale
+                L.pos = tracker.pos
+                L.text = str(track_galaxy.stars[targeted_star])
+                
+            except :
+                print("묵살")
+        else:
+            if 'a' in k: v.x -= dv
+            if 'd' in k: v.x += dv
+            if 's' in k: v.y -= dv
+            if 'w' in k: v.y += dv
+            if 'q' in k: v.z -= dv
+            if 'e' in k: v.z += dv
+            
+            tracker.pos = v
+
 
 if __name__ == '__main__':
+    
     main()
