@@ -203,7 +203,7 @@ class Galaxy(object):
 ##### 실제 속도 구하기
 여기가 코드 중에서 가장 어려운 부분이라고 생각합니다.
 <p align="center">
-  <img src="image/bigbrain.jpg" width=700><br/>
+  <img src="image/bigbrain.jpg" width=350><br/>
 </p>
 
 ```
@@ -230,7 +230,7 @@ class Galaxy(object):
 ```
 벡터의 곱은 
 <p align="center">
-  <img src="image/vector_m.png" width=700><br/>
+  <img src="image/vector_m.png" width=500><br/>
 </p>
 
 이따구 이기에 입자가 향하는 방향을 알수있습니다. 
