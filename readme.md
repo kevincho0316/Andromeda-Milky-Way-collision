@@ -203,7 +203,7 @@ class Galaxy(object):
 ##### 실제 속도 구하기
 여기가 코드 중에서 가장 어려운 부분이라고 생각합니다.
 <p align="center">
-  <img src="image/big_brain.png" width=700><br/>
+  <img src="image/bigbrain.png" width=700><br/>
 </p>
 
 ```
