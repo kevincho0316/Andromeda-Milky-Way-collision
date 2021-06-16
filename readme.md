@@ -7,6 +7,7 @@
 
 - [Vpython을 이용한 안드로메다 우리 은하 충돌 시뮬레이션](#vpython을-이용한-안드로메다-우리-은하-충돌-시뮬레이션)
   - [install      설치](#install------설치)
+  - [Dev Enviorment](#dev-enviorment)
   - [내가이걸 왜 만들었나....](#내가이걸-왜-만들었나)
   - [내가 이걸 안만들었다 라고 생각할까봐 준비했다.](#내가-이걸-안만들었다-라고-생각할까봐-준비했다)
     - [상수](#상수)
@@ -41,7 +42,8 @@ To start simulation run:
 python3 main.py
 ```
 
-##Dev Enviorment
+## Dev Enviorment
+
 - 운영체제: Window10
 - 사용언어: python 3.6.0
 - 사용 라이브러리 vpython, math, random, numpy
@@ -62,10 +64,10 @@ G = 6.673e-11
 위는 모두가 알다 싶이 중력 상수입니다. 이 코드의 핵심 공식인 
 만유인력을 사용하기 위해서는 필수적인 부분이지요 ↘. 
 <p align="center">
-  <img src="image/1.png" width=170><br/>
+  <img src="image/1.PNG" width=170><br/>
+  ↑ 만유인력 공식 
 </p>
 
-↑ 만유인력 공식 
 ***
 ```
 MIN_SolarMass = SolarMass * 0.09
@@ -76,7 +78,7 @@ AVG_SolarMass = SolarMass * 0.3
 별들의 질량의 기준값을 태양의 질량으로 계산하려고합니다.
 
 <p align="center">
-  <img src="image/1.5.png" width=180><br/>
+  <img src="image/1.5.PNG" width=180><br/>
 </p>
 
 이를 기준으로 질량이 큰 항성인 **R136a1**의 질량인 **260 M☉**. 이말은 즉, 태양의 260배의 질량을 가지고 있습니다.이를 최대 별의 질량으로 잡고 최소 별의 질량은 ESO에서 발견한 **OGLE-TR-122b**를 기준으로 하였습니다. 이의 질량은 태양의 **9%** 입니다. 그리고 평균 질량은 태양의 **25%~30%** 정도라고 추정 되는데 이는 우리은하의 별의 개수와 총질량을 기반으로 구한 값이라고 합니다.  
@@ -121,7 +123,7 @@ def acceleration(obj, galaxy):
 ```
 가속도 관련 함수로서 다음과 같은 공식을 따라갑니다.
 <p align="center">
-  <img src="image/2.png" width=170><br/>
+  <img src="image/2.PNG" width=170><br/>
 </p>
 요렇게 해서 가속도를 구합니다.
 ***
@@ -133,7 +135,7 @@ def gravity(mass1, mass2, radius):
 만유인력을 그냥 코딩으로 그대로 적은것입니다.
 
 <p align="center">
-  <img src="image/3.png" width=170><br/>
+  <img src="image/3.PNG" width=170><br/>
 </p>
 
 ~~OOga BooGa Caveman brain~~
@@ -191,26 +193,52 @@ class Galaxy(object):
             return sqrt(G * center_mass / radius)           
 
 ```
+
 밑에 처럼 v의 값을 구하는 모습입니다.
+
 <p align="center">
-  <img src="image/4.png" width=170><br/>
+  <img src="image/4.PNG" width=170><br/>
 </p>
+
 ##### 실제 속도 구하기
+여기가 코드 중에서 가장 어려운 부분이라고 생각합니다.
+<p align="center">
+  <img src="image/big_brain.png" width=700><br/>
+</p>
+
 ```
+                # 별 리스트 생성
         stars = []
-        up = vector(0.0, 1.0, 0.0)
-        for i in range(num_stars):
-            # 정규화된 벡터를 이동방향에 따라 계산함               
-            absolute_pos = positions[i] + self.pos      #실제 좌표에서의 별의 위치*
-            relative_pos = positions[i]                 #은하 내에서의 상대적 별의 위치*
-            vec = relative_pos.cross(up).norm()         #두 백터를 곱한다.*
-            relative_vel = vec * \
-                orbital_Vel(self.mass, relative_pos.mag)
-            absolute_vel = relative_vel + vel           #실제 속도를 구한다.*
+        
+        up = vector(0.0, 1.0, 0.0)  #위를 향하는 벡터 속도를 구할때 써야함
 ```
-이부분이 해결이 안되서 2시간 골머리를 앓다가 스텍오버에서 해결법을 찾은건데....
-벡터 관련된 내용입니다. 저도 모르겠네요 참고로 옆 주석은 영어를 해석 한것입니다.(해석한건 *이 끝에 붙어있음)
+약간의 세팅을 해줍니다.
+```
+        for i in range(num_stars):
+            # 정규화된 벡터를 이동방향에 따라 계산함                                                     
+            a_pos = positions[i] + self.pos      #실제 좌표에서의 별의 위치
+            r_pos = positions[i]                 #은하 내에서의 상대적 별의 위치
+```
+은하를 기준으로 하는 좌표값과 생 좌표값을 만듦니다.
+
+
+```            
+            vec = r_pos.cross(up).norm()         #위를 향하는 벡터와 은하으로 부터의 위치를 곱한다.이거는 공이 움직이는 방향만을 나타낸다.   
+            
+            r_vel = vec * orbital_Vel(self.mass, r_pos.mag) # 위에서 공의 방향을 구했으니 이를 속도와 곱해서 벡터(힘과 방향을 복합적으로 나타냄)를 구한다. 
+            a_vel = r_vel + vel           #실제 속도를 구한다. 상대적인 속도와 은하의 속도를 더함으로써
+```
+벡터의 곱은 
+<p align="center">
+  <img src="image/vector_m.png" width=700><br/>
+</p>
+
+이따구 이기에 입자가 향하는 방향을 알수있습니다. 
+그리고 방향에다가 상대적인 속도를 곱해서 방향과 크기를 모두 가지는 진정한(?) 백터를 만든후
+은하의 속도에 상대적인 속도를 더해서 실질적 속도를 구합니다. 
+
 ##### 별 생성 신호
+
 ```
 
             stars.append(Star(                          #구를 만들어달라고 신청을 한다.
@@ -225,9 +253,13 @@ class Galaxy(object):
         self.stars = np.array(stars)
 
 ```
+
 별 생성을 하고 리스트에 추가합니다.
+
 ***
+
 #### 별
+
 ```
 class Star(object):
     def __init__(self, mass, radius, pos, vel, color):
@@ -250,13 +282,20 @@ class Star(object):
             "\nVel: " + str(self.vel)
 
 ```
+
 말그대로 별을 생성 하는 부분입니다. 질량 색상 등의 요청에 맞추어 이를 생성합니다.
+
 ```@property```
+
 는 코드의 양을 줄여주는 장치로 신기함.. 하여튼 그럼 
+
 ***
+
 ### 진짜 실행 
+
 ~~그럼 가짜로 실행하니?~~
 여기는 비교적 쉬우니 빨리 넘어가쟈
+
 ```
     t = 0
     milky_way = Galaxy(
@@ -276,7 +315,9 @@ class Star(object):
         color=vector(0, 0, 1)
     )
 ```
+
 클래스 호출해서 은하 만듭니다.
+
 ```
     while True:
         rate(100)
@@ -300,7 +341,8 @@ class Star(object):
             star.vel += acceleration(star, milky_way) * distance + acceleration(star, andromeda) * distance
             star.pos += star.vel * distance
 ```
-요거는 이제 별들의 움직임을 마ㅏㅏㅏㄱ 계산하는 부분임 
+
+요거는 이제 별들의 움직임을 마ㅏㅏㅏㄱ 계산하는 부분임니다. 
 
 ```
         milky_way.vel += acceleration(milky_way, andromeda) * distance
@@ -311,6 +353,7 @@ class Star(object):
 
         t += distance
 ```
+
 은하의 움직임을 계산합니다.
 
 

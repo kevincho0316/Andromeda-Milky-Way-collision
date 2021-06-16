@@ -134,21 +134,24 @@ class Galaxy(object):
 
         # 별 리스트 생성
         stars = []
-        up = vector(0.0, 1.0, 0.0)
+        
+        up = vector(0.0, 1.0, 0.0)  #위를 향하는 벡터 속도를 구할때 써야함
+
         for i in range(num_stars):
-            # 정규화된 벡터를 이동방향에 따라 계산함                                                        별표
-            absolute_pos = positions[i] + self.pos      #실제 좌표에서의 별의 위치
-            relative_pos = positions[i]                 #은하 내에서의 상대적 별의 위치
-            vec = relative_pos.cross(up).norm()         #두 백터를 곱한다.
-            relative_vel = vec * \
-                orbital_Vel(self.mass, relative_pos.mag)
-            absolute_vel = relative_vel + vel           #실제 속도를 구한다.
+            # 정규화된 벡터를 이동방향에 따라 계산함                                                     
+            a_pos = positions[i] + self.pos      #실제 좌표에서의 별의 위치
+            r_pos = positions[i]                 #은하 내에서의 상대적 별의 위치
+            
+            vec = r_pos.cross(up).norm()         #위를 향하는 벡터와 은하으로 부터의 위치를 곱한다.이거는 공이 움직이는 방향만을 나타낸다.   
+            
+            r_vel = vec * orbital_Vel(self.mass, r_pos.mag) # 위에서 공의 방향을 구했으니 이를 속도와 곱해서 벡터(힘과 방향을 복합적으로 나타냄)를 구한다. 
+            a_vel = r_vel + vel           #실제 속도를 구한다. 상대적인 속도와 은하의 속도를 더함으로써
 
             stars.append(Star(                          #구를 만들어달라고 신청을 한다.
                 mass=masses[i],
                 radius=STAR_RADIUS,
-                pos=absolute_pos,
-                vel=absolute_vel,
+                pos=a_pos,
+                vel=a_vel,
                 color=color,
                 
             ))
