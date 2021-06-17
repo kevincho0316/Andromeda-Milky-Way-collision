@@ -35,6 +35,9 @@
 git clone https://github.com/kevincho0316/Andromeda-Milky-Way-collision.git
 ```
 ```
+cd Andromeda-Milky-Way-collision
+```
+```
 pip install -r requirements.txt
 ```
 To start simulation run:
