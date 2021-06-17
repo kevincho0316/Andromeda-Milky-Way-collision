@@ -283,7 +283,8 @@ def main():
                 if 'p' in k:
                     break
                 elif 'm' in k:
-                    scene.capture(str(targeted_star)+'.png')                # 여기ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ
+                    scene.capture(str(targeted_star)+'.png')    
+                    k = None            # 여기ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ
 
 
 
