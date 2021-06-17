@@ -278,6 +278,7 @@ def main():
                 L.visible = False
         elif 'o' in k:
             while True:
+                rate(100)
                 k = None
                 k = keysdown()
                 if 'p' in k:
